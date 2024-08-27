@@ -3,28 +3,13 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 import os
 import requests
-import re
 os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
 st.set_page_config(
     page_title="Blog structure builder",
     page_icon="🖋️"
 )
-st.title("Blog Structure builder")
+st.title("Blog Structure builder🖋️")
 
-def average_sentence_length(text):
-    # Split the text into sentences
-    sentences = re.split(r'[.!?]', text)
-    
-    # Filter out any empty sentences
-    sentences = [s.strip() for s in sentences if s.strip()]
-    
-    # Calculate the total number of words in all sentences
-    total_words = sum(len(sentence.split()) for sentence in sentences)
-    
-    # Calculate the average sentence length
-    avg_length = total_words / len(sentences) if sentences else 0
-    
-    return avg_length
 # Form to input the URL
 with st.form(key='my_form'):
     comp_url = st.text_input("Add URL", placeholder="Type or add URL of blog", key='input')
