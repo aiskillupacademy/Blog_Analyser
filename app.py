@@ -24,9 +24,9 @@ if submit_button:
         You are an Expert Blog Analyser. Analyse the blog given above, and talk about its organisation and following points:
         - Use of numbered/bulleted lists       
         - Subsections within main content areas
-        - Use of quotes
-        - SEO keywords used
-        - Links referred 
+        - List of quotes used
+        - Give a list of SEO keywords used
+        - Links referred (show with anchor text in markdown format)
         """
         prompt_org = ChatPromptTemplate.from_template(template_org)
         chain_org = prompt_org | llm
