@@ -53,7 +53,6 @@ To run this application locally, follow these steps:
 
 After entering a blog URL, you might see results like:
 
-```markdown
 # Blog format:
 
 - **Numbered/Bulleted Lists**: The blog effectively uses bulleted lists to break down key points.
@@ -61,4 +60,4 @@ After entering a blog URL, you might see results like:
 - **Quotes**: There are quotes that enhance the credibility of the content.
 - **SEO Keywords**: The blog strategically uses SEO keywords to improve search engine visibility.
 - **Links Referred**: Relevant links are included to provide additional resources.
-```
+
