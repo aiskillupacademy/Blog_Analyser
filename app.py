@@ -20,11 +20,14 @@ if submit_button:
         data = data.text
         data = data.split("Markdown Content:")
         data = data[-1]
+        st.header("Data scraped:")
+        st.write(data+"\n\n")
         template_org = """Blog: {blog}\n\n
         You are an Expert Blog Analyser. Analyse the blog given above, and talk about its organisation and following points:
         - Use of numbered/bulleted lists       
         - Subsections within main content areas
         - List of quotes used
+        - Brand voice used in blog
         - Give a list of SEO keywords used
         - Links referred (show with anchor text in markdown format)
         """
