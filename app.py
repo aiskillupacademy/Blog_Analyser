@@ -1,6 +1,7 @@
 import streamlit as st
 from langchain.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
+from langchain_google_genai import ChatGoogleGenerativeAI
 import os
 import requests
 os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
@@ -13,10 +14,13 @@ st.title("Blog Structure builder🖋️")
 # Form to input the URL
 with st.form(key='my_form'):
     comp_url = st.text_input("Add URL", placeholder="Type or add URL of blog", key='input')
-    model = st.selectbox("Select model:", ["llama3-8b-8192", "llama3-70b-8192","gemma2-9b-it","llama-3.1-8b-instant", "llama-3.1-70b-versatile"])
+    model = st.selectbox("Select model:", ["llama3-8b-8192", "gemini-1.5-pro", "llama3-70b-8192","gemma2-9b-it","llama-3.1-8b-instant", "llama-3.1-70b-versatile"])
     submit_button = st.form_submit_button(label='Enter ➤')
 if submit_button:
-    llm = ChatGroq(model=model, temperature=0.3)
+    if model =="gemini-1.5-pro":
+        llm = ChatGoogleGenerativeAI(model=model, temperature=0.3)
+    else:
+        llm = ChatGroq(model=model, temperature=0.3)
     with st.spinner("Loading blog structure: "):
         data = requests.get(f"https://r.jina.ai/{comp_url}")
         data = data.text
