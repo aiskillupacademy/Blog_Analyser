@@ -14,11 +14,12 @@ st.set_page_config(
 st.title("Blog Rewriter🖋️")
 with st.form(key='my_form'):
     comp_url = st.text_input("Add URL", placeholder="Type or add URL of blog", key='input')
-    model = st.selectbox("Select model:", ["llama3-70b-8192","gemma2-9b-it","llama-3.1-8b-instant", "llama-3.1-70b-versatile"])
+    model = st.selectbox("Select model:", ["llama3-70b-8192", "llama3-8b-8192"])
     ins = st.text_input("Add instructions", placeholder="Type instructions for rewriting blog", key='ins')
     submit_button = st.form_submit_button(label='Enter ➤')
 if submit_button:
     llm = ChatGroq(model=model, temperature=0.3)
+    llm1 = ChatGroq(model="mixtral-8x7b-32768", temperature=0.3)
     with st.spinner("Loading blog structure: "):
         data = requests.get(f"https://r.jina.ai/{comp_url}")
         data = data.text
@@ -77,7 +78,7 @@ if submit_button:
                 st.write('\n- '.join([''] +outrun['res3'].urls))
             template_org = """Blog outline: {outline}\n\n
             SEO keywords: {seo}\n\n
-            You are an Expert Blog Rewriter. Write a blog using the above outline optimised to above SEO keywords. Never give an introduction or conclusion. Strictly keep response within 100 words. Never use =====. If there are numbers in the outline, use numbering too. Don't use unnecessary headings.
+            You are an Expert Blog Rewriter. Write a blog using the above outline optimised to above SEO keywords. Never give an introduction or conclusion. Strictly keep response within 100 words. Never use =====. If there are numbers in the outline, use numbering too. Don't use too many headings.
             Follow these instructions: {ins}\n\n
             Output everything in markdown.
             """
@@ -86,7 +87,10 @@ if submit_button:
             st.header("Rewritten blog:")
             for sec in sections:
                 st.info(sec)
-                st.write(chain_org.invoke({"outline":sec, "seo":', '.join(outrun['res2'].seo), "ins": ins}).content)
+                if outrun['res3'].urls==[]:
+                    st.write(chain_org.invoke({"outline":sec, "seo":', '.join(outrun['res2'].seo), "ins": ins}).content)
+                else:
+                    st.write(chain_org.invoke({"outline":sec, "seo":', '.join(outrun['res2'].seo), "ins": ins+"\n\n"+f"Embed the following links within the blog wherever necessary (not more than once and don't use all links) with relevant anchor text in markdown: {', '.join(outrun['res3'].urls)}"}).content)
         except Exception as e:
             st.error(e)
             st.error("Groq rate limit hit.")
