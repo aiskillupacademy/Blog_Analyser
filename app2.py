@@ -3,10 +3,12 @@ from langchain.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_groq import ChatGroq
 from outparsers import SEO, URLS, Outlines
 from langchain_core.runnables import RunnableParallel
+from langchain_google_genai import ChatGoogleGenerativeAI
 import os
 import requests
 from langchain.output_parsers import PydanticOutputParser
 os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
+os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
 st.set_page_config(
     page_title="Blog Rewriter",
     page_icon="🖋️"
@@ -14,12 +16,15 @@ st.set_page_config(
 st.title("Blog Rewriter🖋️")
 with st.form(key='my_form'):
     comp_url = st.text_input("Add URL", placeholder="Type or add URL of blog", key='input')
-    model = st.selectbox("Select model:", ["llama3-70b-8192", "llama3-8b-8192"])
+    model = st.selectbox("Select model:", ["gemini-1.5-pro","llama3-70b-8192", "llama3-8b-8192"])
     ins = st.text_input("Add instructions", placeholder="Type instructions for rewriting blog", key='ins')
     submit_button = st.form_submit_button(label='Enter ➤')
 if submit_button:
-    llm = ChatGroq(model=model, temperature=0.3)
-    llm1 = ChatGroq(model="mixtral-8x7b-32768", temperature=0.3)
+    if model =="gemini-1.5-pro":
+        llm = ChatGoogleGenerativeAI(model=model, temperature=0.3)
+    else:
+        llm = ChatGroq(model=model, temperature=0.3)
+    llm1 = ChatGroq(model="llama3-8b-8192", temperature=0.3)
     with st.spinner("Loading blog structure: "):
         data = requests.get(f"https://r.jina.ai/{comp_url}")
         data = data.text
@@ -34,7 +39,7 @@ if submit_button:
             input_variables=["blog"],
             partial_variables={"format_instructions": parser1.get_format_instructions()},
             )
-        chain1 = prompt1 | llm | parser1
+        chain1 = prompt1 | llm1 | parser1
 
         parser2 = PydanticOutputParser(pydantic_object=SEO)
         prompt2 = PromptTemplate(
@@ -78,8 +83,8 @@ if submit_button:
                 st.write('\n- '.join([''] +outrun['res3'].urls))
             template_org = """Blog outline: {outline}\n\n
             SEO keywords: {seo}\n\n
-            You are an Expert Blog Rewriter. Write a blog using the above outline optimised to above SEO keywords. Never give an introduction or conclusion. Strictly keep response within 100 words. Never use =====. If there are numbers in the outline, use numbering too. Don't use too many headings.
-            Follow these instructions: {ins}\n\n
+            You are an Expert Blog Rewriter. Write a blog using the above outline optimised to above SEO keywords. Never give an introduction or conclusion. Never use =====. If there are numbers in the outline, use numbering too. Use the exact format of headings given.\n\n
+            {ins}\n\n
             Output everything in markdown.
             """
             prompt_org = ChatPromptTemplate.from_template(template_org)
@@ -88,9 +93,8 @@ if submit_button:
             for sec in sections:
                 st.info(sec)
                 if outrun['res3'].urls==[]:
-                    st.write(chain_org.invoke({"outline":sec, "seo":', '.join(outrun['res2'].seo), "ins": ins}).content)
+                    st.write(chain_org.invoke({"outline":sec, "seo":', '.join(outrun['res2'].seo), "ins": f"Follow these instructions: {ins}"}).content)
                 else:
-                    st.write(chain_org.invoke({"outline":sec, "seo":', '.join(outrun['res2'].seo), "ins": ins+"\n\n"+f"Embed the following links within the blog wherever necessary (not more than once and don't use all links) with relevant anchor text in markdown: {', '.join(outrun['res3'].urls)}"}).content)
+                    st.write(chain_org.invoke({"outline":sec, "seo":', '.join(outrun['res2'].seo), "ins": f"Follow these instructions: {ins}"+"\n\n"+f"Embed the following links within the blog wherever necessary (not more than once and don't use all links) with relevant anchor text in markdown: {', '.join(outrun['res3'].urls)}"}).content)
         except Exception as e:
             st.error(e)
-            st.error("Groq rate limit hit.")
