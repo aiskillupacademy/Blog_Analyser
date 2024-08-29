@@ -39,7 +39,7 @@ if submit_button:
             input_variables=["blog"],
             partial_variables={"format_instructions": parser1.get_format_instructions()},
             )
-        chain1 = prompt1 | llm1 | parser1
+        chain1 = prompt1 | llm | parser1
 
         parser2 = PydanticOutputParser(pydantic_object=SEO)
         prompt2 = PromptTemplate(
