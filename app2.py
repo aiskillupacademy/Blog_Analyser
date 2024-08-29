@@ -83,7 +83,7 @@ if submit_button:
                 st.write('\n- '.join([''] +outrun['res3'].urls))
             template_org = """Blog outline: {outline}\n\n
             SEO keywords: {seo}\n\n
-            You are an Expert Blog Rewriter. Write a blog using the above outline optimised to above SEO keywords. Never give an introduction or conclusion. Never use =====. If there are numbers in the outline, use numbering too. Use the exact format of headings given.\n\n
+            You are an Expert Blog Rewriter. Write a blog using the above outline optimised to above SEO keywords. Never give an introduction or conclusion. Never use =====. If there are numbers in the outline, use numbering too. Rephrase the headings.\n\n
             {ins}\n\n
             Output everything in markdown.
             """
