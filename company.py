@@ -70,7 +70,7 @@ with st.form(key='my_form'):
     submit_button = st.form_submit_button(label='Generate company brief ➤')
 
 if submit_button and link:
-    llm = ChatGroq(model='llama3-8b-8192', temperature=0.3)
+    llm = ChatGroq(model='llama-3.1-70b-versatile', temperature=0.3)
     data = requests.get(f"https://r.jina.ai/{link}")
     data = data.text
     data = data.split("Markdown")[-1]
