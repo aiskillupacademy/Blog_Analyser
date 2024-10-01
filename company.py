@@ -26,14 +26,14 @@ with st.form(key='my_form'):
             - Industry:
             - Brief description of the business: Provide company overview along with the nitty-gritty details of the business.  Include also what makes this company unique. If there is a mission statement or purpose of the company, include this in this overview.
 
-        Customer Personas: For each target audience, create ideal customer personas representing a certain demographics and psychographics etc. Give me a name to the persona and a short description too.
+        ### Customer Personas: For each target audience, create ideal customer personas representing a certain demographics and psychographics etc. Give me a name to the persona and a short description too.
             1. Customer Persona 1
             2. Customer Persona 2
             3. Customer Persona 3
             ...
             n. Customer Persona n
 
-        Problem Statement:
+        ### Problem Statement:
 
             Problem the product/service solves
                 1. Problem 1
@@ -49,7 +49,7 @@ with st.form(key='my_form'):
                 ...
                 n. Pain point n
 
-        Solution: Describe the product and service and how it solves the target audience’s pain points.
+        ### Solution: Describe the product and service and how it solves the target audience’s pain points.
 
             How the product/service addresses the problem:
                 1.
