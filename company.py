@@ -23,7 +23,8 @@ with st.form(key='my_form'):
                 Mission Statement: Summarize the company’s mission or core values.
                 Key Products/Services: Outline the main products or services offered by the company.
                 Target Audience: Describe the company’s primary customer base or target market.
-                Unique Selling Proposition (USP): Highlight what differentiates the company from competitors.
+                Pricing plans: Give detailed price plan if present.
+                Unique Selling Proposition (USP): Highlight what differentiates the company from competitors. Give detailed bullet points.
                 Company Milestones: Include any notable achievements or major milestones.
                 Leadership Team: List key leadership figures with their roles.
                 Recent News: Summarize any recent news or developments about the company.
@@ -57,6 +58,6 @@ if (submit_button and link) or (submit_button and texts):
 
         res = chain.invoke({"question": f"""Website scrap: {data}         
 
-        From the above information, extract the brief description of the business and problems in the product."""}).content
+        From the above information, extract the detailed description of the business"""}).content
         st.write(res)
                 
