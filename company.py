@@ -15,61 +15,26 @@ st.title("Company brief paragraph📝")
 # Accepting text input from the user
 with st.form(key='my_form'):
     link = st.text_input("Company website", placeholder="Enter company website", key='input')
-    default_text="""You are an expert at quickly extracting key details about a business from a large block of text and using those details to generate an in-depth, compelling business summary. 
-        Extract sentences from the scraped webpage text that describe the following details about the company, elaborating on each section with supporting details and explanations.   
-        Cover each and every point mentioned below. Don't leave any point blank.
+    texts = st.text_input("Text", placeholder="Enter text", key='inputtext')
+    default_text="""You are given web-scraped data containing information about a company. From this data, extract and summarize key details to create a complete company brief. The brief should include the following sections:
 
-        Output format:
-
-        ### Company Overview:
-            - Company Name: Name of the company
-            - Industry:
-            - Brief description of the business: Provide company overview along with the nitty-gritty details of the business.  Include also what makes this company unique. If there is a mission statement or purpose of the company, include this in this overview.
-
-        ### Customer Personas: For each target audience, create ideal customer personas representing a certain demographics and psychographics etc. Give me a name to the persona and a short description too.
-            1. Customer Persona 1
-            2. Customer Persona 2
-            3. Customer Persona 3
-            ...
-            n. Customer Persona n
-
-        ### Problem Statement:
-
-            Problem the product/service solves
-                1. Problem 1
-                2. Problem 2
-                3. Problem 3
-                ...
-                n. Problem n
-
-            Pain points for customer
-                1. Pain point 1
-                2. Pain point 2
-                3. Pain point 3
-                ...
-                n. Pain point n
-
-        ### Solution: Describe the product and service and how it solves the target audience’s pain points.
-
-            How the product/service addresses the problem:
-                1.
-                2.
-                3.
-                ...
-                n. Customer Persona n
-
-            Key features and benefits
-                1. Feature 1
-                2. Feature 2
-                3. Feature 3
-                ...
-                n. Feature n
+                Company Name: Identify and highlight the name of the company.
+                Industry: Specify the industry or sector the company operates in.
+                Mission Statement: Summarize the company’s mission or core values.
+                Key Products/Services: Outline the main products or services offered by the company.
+                Target Audience: Describe the company’s primary customer base or target market.
+                Unique Selling Proposition (USP): Highlight what differentiates the company from competitors.
+                Company Milestones: Include any notable achievements or major milestones.
+                Leadership Team: List key leadership figures with their roles.
+                Recent News: Summarize any recent news or developments about the company.
+                SEO Keywords: Identify relevant SEO keywords related to the company.
+                Ensure that each section is concise yet informative, and the overall tone is professional.
                 """
     system_text = st.text_area("System prompt", value=default_text, key='system_pro', height=200)
     #cta = st.text_input("CTA", placeholder="What do you want the customer to do after reading your post?", key='ctainp')
     submit_button = st.form_submit_button(label='Generate company brief ➤')
 
-if submit_button and link:
+if (submit_button and link) or (submit_button and texts):
     llm = ChatGroq(model='llama-3.1-70b-versatile', temperature=0.3)
     data = requests.get(f"https://r.jina.ai/{link}")
     data = data.text
