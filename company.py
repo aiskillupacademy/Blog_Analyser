@@ -36,12 +36,16 @@ with st.form(key='my_form'):
 
 if (submit_button and link) or (submit_button and texts):
     llm = ChatGroq(model='llama-3.1-70b-versatile', temperature=0.3)
-    data = requests.get(f"https://r.jina.ai/{link}")
-    data = data.text
-    data = data.split("Markdown")[-1]
+    if link!="":
+        data = requests.get(f"https://r.jina.ai/{link}")
+        data = data.text
+        data = data.split("Markdown")[-1]
+    else:
+        data=texts
     with st.spinner("Generating company brief..."):
-        with st.expander(label="Scraped data"):
-            st.write(data)
+        if link!="":
+            with st.expander(label="Scraped data"):
+                st.write(data)
         system_template = system_text
         system_message_prompt = SystemMessagePromptTemplate.from_template(system_template)
 
