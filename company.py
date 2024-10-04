@@ -22,11 +22,9 @@ with st.form(key='my_form'):
                 Industry: Specify the industry or sector the company operates in.
                 Mission Statement: Summarize the company’s mission or core values.
                 Key Products/Services: Outline the main products or services offered by the company.
-                Target Audience: Describe the company’s primary customer base or target market.
-                Pricing plans: Give detailed price plan if present.
+                Target Audience: Describe the company’s primary customer base or target market in bullet points.
                 Unique Selling Proposition (USP): Highlight what differentiates the company from competitors. Give detailed bullet points.
                 Company Milestones: Include any notable achievements or major milestones.
-                Leadership Team: List key leadership figures with their roles.
                 Recent News: Summarize any recent news or developments about the company.
                 SEO Keywords: Identify relevant SEO keywords related to the company.
                 Ensure that each section is concise yet informative, and the overall tone is professional.
@@ -58,6 +56,7 @@ if (submit_button and link) or (submit_button and texts):
 
         res = chain.invoke({"question": f"""Website scrap: {data}         
 
-        From the above information, extract the detailed description of the business"""}).content
+        From the above information, extract the detailed description of the business. You should create a 1000 word document which can be used as an investor pitch. Don't give any conclusion, career opportunities or franchise facts."""}).content
         st.write(res)
+        # print(res)
                 
