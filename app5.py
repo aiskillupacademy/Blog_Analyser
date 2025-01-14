@@ -1,6 +1,7 @@
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 import streamlit as st
+import os
 def img_prompt(query):
     sys_pr = """You are an automatic AI Image Generation prompt generator. 
 
@@ -52,7 +53,11 @@ def img_prompt(query):
     
     return output[0], prompts
     
-
+os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
+st.set_page_config(
+    page_title="Image prompts",
+    page_icon="🖼️"
+)
 st.title("Image Prompts")
 
 input = st.text_input("Prompt:")
