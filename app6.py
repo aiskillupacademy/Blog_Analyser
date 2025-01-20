@@ -6,7 +6,6 @@ import streamlit as st
 from langchain_core.runnables import RunnableLambda, RunnableParallel
 import os
 import time
-os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
 os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
 class USP(BaseModel):
     problem: str
