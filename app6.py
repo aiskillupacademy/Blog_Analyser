@@ -1,12 +1,13 @@
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
 from langchain.output_parsers import PydanticOutputParser
 from pydantic import BaseModel
-from langchain_groq import ChatGroq 
+from langchain_google_genai import ChatGoogleGenerativeAI
 import streamlit as st
 from langchain_core.runnables import RunnableLambda, RunnableParallel
 import os
 import time
 os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
+os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
 class USP(BaseModel):
     problem: str
     solution: str
@@ -21,14 +22,14 @@ def generate_text(system_prompt:str, human_prompt, temp=0.2, model="gemini-1.5-f
             {"role": "system", "content": system_prompt },
             {"role": "human", "content": human_prompt }
     ]
-        llm = ChatGroq(model="llama-3.1-8b-instant", temperature= 0.2)
+        llm = ChatGoogleGenerativeAI(model='gemini-1.5-flash', temperature=0.3)
         # output = llm.with_config({"run_name": "FUNC> LLM"}).invoke(messages).content
         # return output
     elif type(human_prompt)== list:
         messages = [
             {"role": "system", "content": system_prompt }]
         messages += human_prompt
-        llm =ChatGroq(model="llama-3.1-8b-instant", temperature= 0.2)
+        llm = ChatGoogleGenerativeAI(model='gemini-1.5-flash', temperature=0.3)
     
     # verbose=[]
     output = llm.with_config({"run_name": "FUNC> LLM"}).invoke(messages).content
@@ -37,7 +38,7 @@ def generate_text(system_prompt:str, human_prompt, temp=0.2, model="gemini-1.5-f
 
 def standard_analysis(payload: dict):
     cb  = payload.get("company_brief")
-    llm = ChatGroq(model="llama-3.1-8b-instant", temperature= 0.2)
+    llm = ChatGoogleGenerativeAI(model='gemini-1.5-flash', temperature=0.3)
     strength = f"""
     You are an experienced business consultant. Based on the company brief provided below, generate a set of dynamic and insightful questions to identify the company's strengths. These questions should help uncover internal factors like successful processes, strong assets, customer satisfaction, competitive advantages, workforce skills, and brand perception.
 
@@ -228,7 +229,7 @@ def standard_analysis(payload: dict):
     .
     .
     """
-    llm = ChatGroq(model="llama-3.1-8b-instant", temperature= 0.2)
+    llm = ChatGoogleGenerativeAI(model='gemini-1.5-flash', temperature=0.3)
 
     # pestel_postproc_system_prompt_template = PromptTemplate.from_template(pestel_postproc_system_prompt)
 
@@ -287,7 +288,7 @@ def standard_analysis(payload: dict):
     .
     .
     """
-    llm = ChatGroq(model="llama-3.1-8b-instant", temperature= 0.2)
+    llm = ChatGoogleGenerativeAI(model='gemini-1.5-flash', temperature=0.3)
 
     # pff_postproc_system_prompt_template = PromptTemplate.from_template(pff_postproc_system_prompt)
 
@@ -307,7 +308,7 @@ def standard_analysis(payload: dict):
 def usp(payload: dict):
     cb  = payload.get("company_brief")
     company_type = payload.get("type")
-    llm = ChatGroq(model="llama-3.1-8b-instant", temperature= 0.2)
+    llm = ChatGoogleGenerativeAI(model='gemini-1.5-flash', temperature=0.3)
     
     company_details = cb[:100]
     # company_type = generate_text("Classify the company as `product` or   `service`. A product company has a product (which can be anything) approaches clients on its own. A service company specializes in something and are approached by clients to do it for them.", company_details)
