@@ -21,14 +21,14 @@ def generate_text(system_prompt:str, human_prompt, temp=0.2, model="gemini-1.5-f
             {"role": "system", "content": system_prompt },
             {"role": "human", "content": human_prompt }
     ]
-        llm = ChatGroq(model="llama3-8b-8192", temperature= 0.2)
+        llm = ChatGroq(model="llama-3.1-8b-instant", temperature= 0.2)
         # output = llm.with_config({"run_name": "FUNC> LLM"}).invoke(messages).content
         # return output
     elif type(human_prompt)== list:
         messages = [
             {"role": "system", "content": system_prompt }]
         messages += human_prompt
-        llm =ChatGroq(model="llama3-8b-8192", temperature= 0.2)
+        llm =ChatGroq(model="llama-3.1-8b-instant", temperature= 0.2)
     
     # verbose=[]
     output = llm.with_config({"run_name": "FUNC> LLM"}).invoke(messages).content
@@ -37,7 +37,7 @@ def generate_text(system_prompt:str, human_prompt, temp=0.2, model="gemini-1.5-f
 
 def standard_analysis(payload: dict):
     cb  = payload.get("company_brief")
-    llm = ChatGroq(model="llama3-8b-8192", temperature= 0.2)
+    llm = ChatGroq(model="llama-3.1-8b-instant", temperature= 0.2)
     strength = f"""
     You are an experienced business consultant. Based on the company brief provided below, generate a set of dynamic and insightful questions to identify the company's strengths. These questions should help uncover internal factors like successful processes, strong assets, customer satisfaction, competitive advantages, workforce skills, and brand perception.
 
@@ -228,7 +228,7 @@ def standard_analysis(payload: dict):
     .
     .
     """
-    llm = ChatGroq(model="llama3-8b-8192", temperature= 0.2)
+    llm = ChatGroq(model="llama-3.1-8b-instant", temperature= 0.2)
 
     # pestel_postproc_system_prompt_template = PromptTemplate.from_template(pestel_postproc_system_prompt)
 
@@ -287,7 +287,7 @@ def standard_analysis(payload: dict):
     .
     .
     """
-    llm = ChatGroq(model="llama3-8b-8192", temperature= 0.2)
+    llm = ChatGroq(model="llama-3.1-8b-instant", temperature= 0.2)
 
     # pff_postproc_system_prompt_template = PromptTemplate.from_template(pff_postproc_system_prompt)
 
@@ -307,7 +307,7 @@ def standard_analysis(payload: dict):
 def usp(payload: dict):
     cb  = payload.get("company_brief")
     company_type = payload.get("type")
-    llm = ChatGroq(model="llama3-8b-8192", temperature= 0.2)
+    llm = ChatGroq(model="llama-3.1-8b-instant", temperature= 0.2)
     
     company_details = cb[:100]
     # company_type = generate_text("Classify the company as `product` or   `service`. A product company has a product (which can be anything) approaches clients on its own. A service company specializes in something and are approached by clients to do it for them.", company_details)
